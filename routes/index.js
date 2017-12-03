@@ -1,10 +1,11 @@
-const express = require('express')
-const router = express.Router()
 
-
-router.get('/', (req, res) => {
-    res.send("Hello Node");
-})
-
-
-module.exports = router
+module.exports = (app) => {
+    app.use('/', (req, res) => {
+        res.redirect('/post')
+    })
+    app.use('/signin', require('./signin'))
+    app.use('/signout', require('./signout'))
+    app.use('/singup', require('./signup'))
+    app.use('/post', require('./post'))
+    app.use('/comments', require('./comments'))
+}
