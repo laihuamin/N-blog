@@ -8,7 +8,6 @@ const routes = require('./routes')
 const pkg = require('./package')
 const config = require('config-lite')(__dirname)
 
-console.log(config)
 // 模版引擎存放目录
 app.set('views', path.join(__dirname, 'views'))
 // 设置模版引擎为ejs
