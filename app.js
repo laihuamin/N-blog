@@ -16,6 +16,20 @@ app.set('view engine', 'ejs')
 // 设置静态文件目录
 app.use(express.static(path.join(__dirname, 'public')))
 
+// 设置全局模版常量
+app.locals.blog = {
+    title: pkg.name,
+    description: pkg.description
+}
+
+// 添加三个模版变量
+app.use((req, res, next) => {
+    res.locals.user = req.session.user
+    res.locals.success = req.flash('success').toString()
+    res.locals.error = req.flash('error').toString()
+    next()
+})
+
 // session中间件
 app.use(session({
     // 设置cookie中的session id 字段
