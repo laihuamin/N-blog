@@ -31,3 +31,8 @@
 ### 12月4号
 - 书写权限控制
 - 书写页面设计
+
+### 12月5号
+- 学习app.locals和res.locals区别
+- app.locals和res.locals的书写
+- 连接数据库
