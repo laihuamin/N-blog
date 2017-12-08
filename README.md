@@ -40,3 +40,6 @@
 ### 12月6号
 - 学习mongoose
 - 尝试探究一下mongoose背后的原理
+
+### 12月7号
+- mongoose入门
