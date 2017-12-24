@@ -43,3 +43,7 @@
 
 ### 12月7号
 - mongoose入门
+
+### 12月8号
+- mongoose的基本概念
+- mongoose的CRUD
