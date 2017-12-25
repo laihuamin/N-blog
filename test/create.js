@@ -29,5 +29,12 @@ const myDesc = new Desc({
     desc: 'smart'
 })
 
-console.log(myDesc.name);
-console.log(myDesc.desc);
+// 存入数据库操作
+
+myDesc.save(function(err) {
+    if(err) {
+        throw err;
+    } else {
+        console.log('success');
+    }
+})
