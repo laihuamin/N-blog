@@ -34,3 +34,19 @@ Desc.find({}, function(err, doc) {
 })
 
 // findById方法
+
+Desc.findById("5a4051e176253c03070a392c", function(err, doc) {
+    if(err) {
+        throw err;
+    } else {
+        console.log(doc);
+    }
+})
+
+Desc.findOne({name: 'laihuamin'}, function(err, doc) {
+    if(err) {
+        throw err;
+    } else {
+        console.log(doc);
+    }
+})
