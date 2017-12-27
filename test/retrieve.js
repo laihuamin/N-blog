@@ -32,3 +32,5 @@ Desc.find({}, function(err, doc) {
         console.log(doc);
     }
 })
+
+// findById方法

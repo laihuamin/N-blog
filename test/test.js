@@ -2,12 +2,12 @@ require('./connect');
 
 const User = require('./use');
 
-const use = new User({
+const user = new User({
     username: 'laihuamin',
     password: 'lhm890%%'
 })
 
-use.save((error, doc) => {
+user.save((error, doc) => {
     if (error) {
         console.log('数据库储存错误' + error)
     }

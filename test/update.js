@@ -29,7 +29,7 @@ const Desc = mongoose.model('Desc', DescSchema);
 
 // 更新数据库中的数据
 
-Desc.update({name: 'laihuamin'}, {phone:'13777836051'}, function(error) {
+Desc.update({name: 'laihuamin'}, {phone:'137........'}, function(error) {
     if(error) {
         throw error;
     } else {
