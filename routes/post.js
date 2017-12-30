@@ -15,7 +15,7 @@ router.post('/create', checkLogin, (req, res, next) => {
 
 // 获得发表文章的页面
 router.get('/create', checkLogin, (req, res, next) => {
-    res.send('发表文章页')
+    res.render('create')
 })
 
 // 具体某一篇文章的详情页
