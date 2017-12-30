@@ -1,7 +1,8 @@
-const express = require('express')
-const router = express.Router()
-
-const checkLogin = require('../middlewares/check').checkLogin
+const express = require('express'),
+    router = express.Router(),
+    checkLogin = require('../middlewares/check').checkLogin,
+    PostModels = require('../models/posts'),
+    PostController = require('../controller/post');
 
 // 主页路由
 router.get('/', (req, res, next) => {
@@ -10,7 +11,12 @@ router.get('/', (req, res, next) => {
 
 // 提交发表的文章
 router.post('/create', checkLogin, (req, res, next) => {
-    res.send('发表文章')
+    const post = PostController(req);
+    PostModels.create(post).then((result) => {
+        post = result.ops[0];
+        req.flash('success', '发表成功');
+        res.redirect(`/posts/${post._id}`)
+    }).catch(next)
 })
 
 // 获得发表文章的页面
