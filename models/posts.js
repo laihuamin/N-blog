@@ -38,5 +38,21 @@ module.exports = {
     // 通过文章 id 给 pv 加 1
     incPv: function incPv(postId) {
         return Post.update({_id: postId}, {$inc: {pv: 1}}).exec();
+    },
+
+    // 通过一篇文章那到原声的文章，进行编辑
+    getRawPostById: function getRawPostById(postId) {
+        return Post.findOne({_id: postId}).populate({path: 'author', model: 'User'}).exec()
+    },
+
+    // 更新一篇文章
+    updatePostId: function updatePostId(postId, data) {
+        return Post.update({_id: postId}, {$set: data}).exec()
+    },
+
+    // 删除一篇文章
+
+    delPostById: function delPostById(postId) {
+        return Post.remove({_id: postId}).exec()
     }
 }
