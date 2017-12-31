@@ -1,3 +1,5 @@
+import { Post } from '../lib/mongo';
+
 const express = require('express'),
     router = express.Router(),
     checkLogin = require('../middlewares/check').checkLogin,
@@ -6,7 +8,12 @@ const express = require('express'),
 
 // 主页路由
 router.get('/', (req, res, next) => {
-    res.send('主页')
+    const author = req.query.author;
+    Post.getPosts(author).then(function(post){
+        reset.render('posts', {
+            post: posts
+        })
+    }).catch(next)
 })
 
 // 提交发表的文章
