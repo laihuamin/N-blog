@@ -1,4 +1,5 @@
 import { Post } from '../lib/mongo';
+import { Promise } from 'mongoose';
 
 const express = require('express'),
     router = express.Router(),
@@ -33,7 +34,20 @@ router.get('/create', checkLogin, (req, res, next) => {
 
 // 具体某一篇文章的详情页
 router.get('/:postId', (req, res, next) => {
-    res.send('文章详情页')
+    const postId = req.query.postId;
+
+    Promise.all([
+        PostModels.getPostById(postId),
+        PostModels.incPv(postId)
+    ]).then(function(result) {
+        const post = result[0];
+        if(!post) {
+            throw Error('该文章不存在')
+        }
+        res.render('post', {
+            post: post
+        })
+    }).catch(next)
 })
 
 // 编辑具体的某一篇文章
