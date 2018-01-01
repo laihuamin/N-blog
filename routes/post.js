@@ -51,18 +51,63 @@ router.get('/:postId', (req, res, next) => {
 })
 
 // 编辑具体的某一篇文章
-router.post('/:postId/edit', checkLogin, (req, res, next) => {
-    res.send('更新文章详情页')
+router.get('/:postId/edit', checkLogin, (req, res, next) => {
+    const postId = req.params.postId,
+        author = req.session.user._id;
+    return Post.getRawPostById(postId).then(function(post) {
+        if(!post) {
+            throw new Error('该文章不存在')
+        }
+        if(author.toString() !== post.author._id.toString()) {
+            throw new Error('权限不够')
+        }
+        res.render('edit', {
+            post: post
+        })
+    }).catch(next)
 })
 
 // 更新文章的页面
-router.get('/:postId/edit', checkLogin, (req, res, next) => {
-    res.send('更新页面')
+router.post('/:postId/edit', checkLogin, (req, res, next) => {
+    const postId = req.params.postId,
+        author = req.session.user._id,
+        title = req.fields.title,
+        content = req.fields.content;
+
+    try{
+        if(!title) {
+            throw new Error('请填写标题')
+        }
+        if(!content) {
+            throw new Error('请填写内容')
+        }
+    }catch(e) {
+        req.flash('error', e.message)
+        return reset.redirect('back')
+    }
+
+    PostModels.updatePostId(postId, {title: title, content: content}).then(function() {
+        req.flash('success', '编辑文章成功')
+        res.redirect(`/posts/${postId}`)
+    }).catch(next)
 })
 
 // 删除文章的页面
 router.get('/:postId/remove', checkLogin, (req, res, next) => {
-    res.send('删除文章')
+    const postId = req.params.postId,
+        author = req.session.user._id;
+    return Post.getRawPostById(postId).then(function(post) {
+        if(!post) {
+            throw new Error('该文章不存在')
+        }
+        if(author.toString() !== post.author._id.toString()) {
+            throw new Error('权限不够')
+        }
+        PostModels.delPostById(postId).then(function(){
+            req.flash('success', '删除文章成功')
+            reset.redirect('/posts')
+        })
+    }).catch(next)
 })
 
 module.exports = router
