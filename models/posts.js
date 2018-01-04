@@ -75,7 +75,11 @@ module.exports = {
 
     // 删除一篇文章
 
-    delPostById: function delPostById(postId) {
-        return Post.remove({_id: postId}).exec()
+    delPostById: function delPostById(postId, author) {
+        return Post.remove({_id: postId, author: author}).exec().then(function(res) {
+            if(res.result.ok && res.result.n > 0) {
+                return CommentModel.delCommentByPostId(postId)
+            }
+        })
     }
 }
