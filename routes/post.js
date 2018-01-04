@@ -5,7 +5,8 @@ const express = require('express'),
     router = express.Router(),
     checkLogin = require('../middlewares/check').checkLogin,
     PostModels = require('../models/posts'),
-    PostController = require('../controller/post');
+    PostController = require('../controller/post'),
+    CommentsModels = require('../models/comments');
 
 // 主页路由
 router.get('/', (req, res, next) => {
@@ -38,14 +39,17 @@ router.get('/:postId', (req, res, next) => {
 
     Promise.all([
         PostModels.getPostById(postId),
+        CommentsModels.delCommentByPostId(postId),
         PostModels.incPv(postId)
     ]).then(function(result) {
         const post = result[0];
+        const comments = result[1];
         if(!post) {
             throw Error('该文章不存在')
         }
         res.render('post', {
-            post: post
+            post,
+            comments
         })
     }).catch(next)
 })
