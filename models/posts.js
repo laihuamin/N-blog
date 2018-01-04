@@ -1,5 +1,8 @@
-const marked = require('marked');
+import { Promise } from 'mongoose';
+
+const marked = require('marked')
 const Post = require('../lib/mongo').Post
+const CommentModel = require('./comments')
 
 // 将post的content的markdown，转化成html
 Post.plugin('contentHtml', {
@@ -12,6 +15,26 @@ Post.plugin('contentHtml', {
     afterFindOne: function(post) {
         if(post) {
             post.content = marked(post.content)
+        }
+        return post
+    }
+})
+
+Post.plugin('addCommentCount', {
+    afterFind: function(posts) {
+        return Promise.all(posts.map(function(post) {
+            return CommentModel.getCommentsCount(post._id).then(function(commentCount) {
+                post.commentCount = commentCount
+                return post
+            })
+        }))
+    },
+    afterFindOne: function(post) {
+        if(post) {
+            return CommentModel.getCommentsCount(post._id).then(function(commentCount) {
+                post.commentCount = commentCount
+                return post
+            })
         }
         return post
     }
